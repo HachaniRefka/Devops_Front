@@ -1,0 +1,81 @@
+<div class="todo-content">
+  <h2 class="page-title">Tâches à faire</h2>
+  <!--
+      -- ─── FORM ────────────────────────────────────────────────────────
+      -->
+  <div class="todo-create">
+    <form [formGroup]="todoForm"
+          (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <input type="text"
+               placeholder="Taper votre todo ici ..."
+               formControlName="title"
+               class="form-control"
+               [ngClass]="{ 'is-invalid': submitted && todoFormsControls['title'].errors }" />
+        <div *ngIf="submitted && todoFormsControls['title'].errors"
+             class="invalid-feedback">
+          <div *ngIf="todoFormsControls['title'].errors.required">Ce champ doit être rempli</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <button class="btn btn-outline-success btn-block">Ajouter</button>
+      </div>
+    </form>
+  </div>
+  <!--
+      -- ─────────────────────────────────────────────── END OF FORM ─────
+      -->
+  <ul class="todo-list"
+      *ngIf="todos && todos.length > 0; else noTodoTemplate">
+    <li *ngFor="let todo of todos"
+        [class.completed]="todo.completed === true">
+      <!--
+          -- DEFAULT VIEW MODE
+          -->
+      <div class="todo-row"
+           *ngIf="!editing || editingTodo.id != todo.id">
+        <a class="todo-completed"
+           (click)="toggleCompleted(todo)">
+          <i class="material-icons toggle-completed-checkbox"></i>
+        </a>
+        <span class="todo-title">
+          {{todo.title}}
+        </span>
+        <span class="todo-actions">
+          <a (click)="editTodo(todo)">
+            <i class="material-icons edit">edit</i>
+          </a>
+          <a (click)="deleteTodo(todo.id)">
+            <i class="material-icons delete">clear</i>
+          </a>
+        </span>
+      </div>
+      <!--
+        -- ─── EDIT MODE ───────────────────────────────────────────────────
+        -->
+      <div class="todo-edit"
+           *ngIf="editing && editingTodo.id === todo.id">
+        <input class="form-control"
+               type="text"
+               [(ngModel)]="editingTodo.title"
+               required>
+        <span class="edit-actions">
+          <a (click)="updateTodo(editingTodo)">
+            <i class="material-icons">done</i>
+          </a>
+          <a (click)="clearEditing()">
+            <i class="material-icons">clear</i>
+          </a>
+        </span>
+      </div>
+    </li>
+  </ul>
+  <!--
+    -- ─── NO DATA TEMPLATE ───────────────────────────────────────────────────────────
+    -->
+  <ng-template #noTodoTemplate>
+    <div class="no-todos">
+      <p>Aucune tâche à faire</p>
+    </div>
+  </ng-template>
+</div>
