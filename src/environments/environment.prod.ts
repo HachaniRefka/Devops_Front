@@ -4,7 +4,7 @@
 
 export const environment = {
   production: true,
-  url: 'https://mp2ldevopstodoback.herokuapp.com/',
+  url: 'https://mp2ldevopstodoback.herokuapp.com',
   port: '8080',
   timeZone: 'Africa/Tunis'
 };
